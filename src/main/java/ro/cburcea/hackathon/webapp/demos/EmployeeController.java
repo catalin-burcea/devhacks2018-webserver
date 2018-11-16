@@ -28,8 +28,6 @@ class EmployeeController {
 		return empRepository.save(newEmployee);
 	}
 
-	// Single item
-
 	@GetMapping("/employees/{id}")
 	Employee one(@PathVariable Long id) {
 
