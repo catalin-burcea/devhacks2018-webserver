@@ -32,7 +32,7 @@ class EmployeeController {
 	Employee one(@PathVariable Long id) {
 
 		return empRepository.findById(id)
-			.orElseThrow(() -> new EmployeeNotFoundException(id));
+			.orElseThrow(() -> new ObjectNotFoundException(id));
 	}
 
 	@GetMapping("/employees/role")
