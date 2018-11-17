@@ -35,7 +35,6 @@ class LoadDatabase {
 	@Bean
     CommandLineRunner initDatabase() {
 		return args -> {
-//		    String[] ar = null;
 //            RandomEntry.addToDB(reviewRepository, userRepository, companyRepository, tagRepository);
 
 
