@@ -12,6 +12,7 @@ import ro.cburcea.hackathon.webapp.entities.Review;
 import ro.cburcea.hackathon.webapp.repositories.CompanyRepository;
 import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,11 +24,40 @@ public class CompanyController {
     ReviewRepository reviewRepository;
 
     @GetMapping(path = "/companies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Company> getCompanies(@RequestParam(value = "name", required = false) String name) {
-        if (name == null) {
-            return companyRepository.findAll();
+    public List<Company> getCompanies(@RequestParam(value = "name", required = false) String name,
+                                      @RequestParam(value = "location", required = false) String location,
+                                      @RequestParam(value = "tag", required = false) String tag) {
+        List<Company> companies = companyRepository.findAll();
+        List<Company> ret = new ArrayList<>();
+        for (Company comp : companies) {
+            if (    (name == null || comp.getName().compareTo(name) == 0) &&
+                    (location == null || comp.getLocation().compareTo(location) == 0) &&
+                    (tag == null || comp.getTag().getName().compareTo(tag) == 0)   ) {
+                ret.add(comp);
+            }
         }
-        return companyRepository.findByName(name);
+
+        return ret;
+
+//        if (location == null) {
+//            if (name == null) {
+//                return companyRepository.findAll();
+//            }
+//            return companyRepository.findByName(name);
+//        }
+//
+//        List<Company> companies = companyRepository.findByLocation(location);
+//        if (name == null) {
+//            return companies;
+//        }
+//
+//        List<Company> arr = new ArrayList<>();
+//        for (Company comp : companies) {
+//            if (comp.getName().compareTo(name) == 0) {
+//                arr.add(comp);
+//            }
+//        }
+//        return arr;
     }
 
 
