@@ -2,15 +2,14 @@ package ro.cburcea.hackathon.webapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.cburcea.hackathon.webapp.demos.ObjectNotFoundException;
 import ro.cburcea.hackathon.webapp.entities.Company;
 import ro.cburcea.hackathon.webapp.entities.Review;
+import ro.cburcea.hackathon.webapp.entities.User;
 import ro.cburcea.hackathon.webapp.repositories.CompanyRepository;
 import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
+import ro.cburcea.hackathon.webapp.repositories.UserRepository;
 
 import java.util.*;
 
@@ -21,6 +20,8 @@ public class CompanyController {
     CompanyRepository companyRepository;
     @Autowired
     ReviewRepository reviewRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping(path = "/companies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Company> getCompanies(@RequestParam(value = "name", required = false) String name,
@@ -59,6 +60,23 @@ public class CompanyController {
 //        return arr;
     }
 
+    @PostMapping(path = "/companies/{companyId}/reviews", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Review addReview(@RequestParam(value = "rating", required = true) Integer rating,
+                          @RequestParam(value = "category", required = true) String category,
+                          @RequestParam(value = "description", required = true) String description,
+                          @PathVariable Long companyId) {
+
+        final Long userId = 1613L;
+        User user = userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException(userId));
+        Company company = companyRepository.findById(companyId).orElseThrow(() -> new ObjectNotFoundException(companyId));
+
+        Review newReview = new Review(description, rating, category, company, user);
+
+        System.out.println("Adding " + reviewRepository.save(newReview));
+
+        return newReview;
+    }
+
     private static class Pair<T1, T2> {
         T1 first;
         T2 second;
@@ -75,10 +93,10 @@ public class CompanyController {
     }
 
     @GetMapping(path = "/companies/recommendations", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Company> getRecomandation(@RequestParam(value = "salary", required = false) Long salary,
-                                          @RequestParam(value = "interview", required = false) Long interviews,
-                                          @RequestParam(value = "env", required = false) Long environment,
-                                          @RequestParam(value = "training", required = false) Long trainings,
+    public List<Company> getRecomandation(@RequestParam(value = "salary", required = true) Long salary,
+                                          @RequestParam(value = "interview", required = true) Long interviews,
+                                          @RequestParam(value = "env", required = true) Long environment,
+                                          @RequestParam(value = "training", required = true) Long trainings,
                                           @RequestParam(value = "tag", required = false) String tag) {
 
         ArrayList<String> categories = new ArrayList<>();
