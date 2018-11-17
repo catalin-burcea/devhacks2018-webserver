@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ro.cburcea.hackathon.webapp.demos.ObjectNotFoundException;
 import ro.cburcea.hackathon.webapp.entities.Company;
+import ro.cburcea.hackathon.webapp.entities.Review;
 import ro.cburcea.hackathon.webapp.repositories.CompanyRepository;
+import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public class CompanyController {
 
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
 
     @GetMapping(path = "/companies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Company> getCompanies(@RequestParam(value = "name", required = false) String name) {
@@ -31,6 +35,14 @@ public class CompanyController {
     public Company getCompaniesById(@PathVariable Long id) {
         return companyRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
     }
+
+    @GetMapping(path = "/companies/{id}/reviews", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Review> getReviewsByCompanyId(@PathVariable Long id) {
+        Company comp = companyRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
+        return reviewRepository.findByCompany(comp);
+    }
+
+
 
 //    @GetMapping(path = "/companies/{name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    public List<Company> getCompaniesByName(@PathVariable String name) {
