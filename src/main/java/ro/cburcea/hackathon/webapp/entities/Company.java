@@ -8,6 +8,8 @@ public class Company {
     private @Id @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
     private String name;
+    @Lob
+    @Column(name="CONTENT", length=512)
     private String description;
     private Integer nrOfEmployees;
     private String location;
