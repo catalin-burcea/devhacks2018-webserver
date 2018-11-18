@@ -12,6 +12,7 @@ import ro.cburcea.hackathon.webapp.repositories.CompanyRepository;
 import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
 import ro.cburcea.hackathon.webapp.repositories.TagRepository;
 import ro.cburcea.hackathon.webapp.repositories.UserRepository;
+import ro.cburcea.hackathon.webapp.utils.RandomEntry;
 
 import java.util.ArrayList;
 import java.util.List;
