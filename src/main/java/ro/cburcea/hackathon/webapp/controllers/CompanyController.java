@@ -5,9 +5,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ro.cburcea.hackathon.webapp.demos.ObjectNotFoundException;
 import ro.cburcea.hackathon.webapp.entities.Company;
+import ro.cburcea.hackathon.webapp.entities.Job;
 import ro.cburcea.hackathon.webapp.entities.Review;
 import ro.cburcea.hackathon.webapp.entities.User;
 import ro.cburcea.hackathon.webapp.repositories.CompanyRepository;
+import ro.cburcea.hackathon.webapp.repositories.JobRepository;
 import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
 import ro.cburcea.hackathon.webapp.repositories.UserRepository;
 
@@ -22,6 +24,8 @@ public class CompanyController {
     ReviewRepository reviewRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    JobRepository jobRepository;
 
     @PostMapping(path = "login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public User verifyUser(@RequestParam(value = "username", required = true) String username,
@@ -169,13 +173,11 @@ public class CompanyController {
         return reviewRepository.findByCompany(comp);
     }
 
-
-
-//    @GetMapping(path = "/companies/{name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public List<Company> getCompaniesByName(@PathVariable String name) {
-//        List<Company> ret = companyRepository.findByName(name);
-//        return ret;
-//    }
+    @GetMapping(path = "/companies/{id}/jobs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Job> getJobsByCompanyId(@PathVariable Long id) {
+        Company comp = companyRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
+        return jobRepository.findByCompany(comp);
+    }
 
 
 }
