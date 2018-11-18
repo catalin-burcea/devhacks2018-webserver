@@ -8,10 +8,7 @@ import ro.cburcea.hackathon.webapp.entities.Company;
 import ro.cburcea.hackathon.webapp.entities.Review;
 import ro.cburcea.hackathon.webapp.entities.Tag;
 import ro.cburcea.hackathon.webapp.entities.User;
-import ro.cburcea.hackathon.webapp.repositories.CompanyRepository;
-import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
-import ro.cburcea.hackathon.webapp.repositories.TagRepository;
-import ro.cburcea.hackathon.webapp.repositories.UserRepository;
+import ro.cburcea.hackathon.webapp.repositories.*;
 import ro.cburcea.hackathon.webapp.utils.RandomEntry;
 
 import java.util.ArrayList;
@@ -32,10 +29,13 @@ class LoadDatabase {
     @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private JobRepository jobRepository;
+
 	@Bean
     CommandLineRunner initDatabase() {
 		return args -> {
-//            RandomEntry.addToDB(reviewRepository, userRepository, companyRepository, tagRepository);
+//            RandomEntry.addToDB(reviewRepository, userRepository, companyRepository, tagRepository, jobRepository);
 
 
 //            this.loadDb();

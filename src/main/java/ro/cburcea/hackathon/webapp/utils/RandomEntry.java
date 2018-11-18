@@ -1,13 +1,7 @@
 package ro.cburcea.hackathon.webapp.utils;
 
-import ro.cburcea.hackathon.webapp.entities.Company;
-import ro.cburcea.hackathon.webapp.entities.Review;
-import ro.cburcea.hackathon.webapp.entities.Tag;
-import ro.cburcea.hackathon.webapp.entities.User;
-import ro.cburcea.hackathon.webapp.repositories.CompanyRepository;
-import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
-import ro.cburcea.hackathon.webapp.repositories.TagRepository;
-import ro.cburcea.hackathon.webapp.repositories.UserRepository;
+import ro.cburcea.hackathon.webapp.entities.*;
+import ro.cburcea.hackathon.webapp.repositories.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,7 +34,7 @@ public class RandomEntry {
     public static void main(String[] args) throws FileNotFoundException {
     }
 
-    public static void addToDB(ReviewRepository reviewRepository, UserRepository userRepository, CompanyRepository companyRepository, TagRepository tagRepository) throws FileNotFoundException {
+    public static void addToDB(ReviewRepository reviewRepository, UserRepository userRepository, CompanyRepository companyRepository, TagRepository tagRepository, JobRepository jobRepository) throws FileNotFoundException {
 
         ArrayList<User> users = new ArrayList<>();
         for (int i = 0; i < 50; ++i) {
@@ -142,6 +136,24 @@ public class RandomEntry {
         for (Review r : reviews) {
             System.out.println("Preloading " + reviewRepository.save(r));
         }
+
+        ArrayList<String> titles = new ArrayList<>();
+        titles.add("Manager");
+        titles.add("Frontend Developer");
+        titles.add("Backend Developer");
+        titles.add("Mentor");
+        titles.add("Server Admin");
+        titles.add("Full Stack Developer");
+        titles.add("Janitor");
+
+        initRandomJob(titles, companies);
+        ArrayList<Job> jobs = new ArrayList<>();
+        for (int i = 0; i < 200; ++i) {
+            jobs.add(getRandomJob());
+        }
+        for (Job j : jobs) {
+            System.out.println( "Preloading " + jobRepository.save(j) );
+        }
     }
 
     private static class Group {
@@ -180,6 +192,41 @@ public class RandomEntry {
         int rating = rand.nextInt(5) + 1;
         Review ret = new Review("Default description", rating, possibleReviews.get(idx).category, "Great Company, Great Culture, Lots of Opportunities", possibleReviews.get(idx).company, possibleReviews.get(idx).user);
         possibleReviews.remove(idx);
+        return ret;
+    }
+    private static class JobGroup {
+        public String title;
+        public Company company;
+        public JobGroup(String t, Company c) {
+            title = t;
+            company = c;
+        }
+    };
+
+    private static ArrayList<JobGroup> possibleJobs;
+    static {
+        possibleJobs = new ArrayList<>();
+    }
+
+    public static void initRandomJob(ArrayList<String> titles, ArrayList<Company> companies) {
+        for (String t : titles) {
+            for (Company c : companies) {
+                possibleJobs.add(new JobGroup(t,c));
+            }
+        }
+    }
+
+    public static Job getRandomJob() {
+        if (possibleJobs.size() == 0) {
+            // throw
+        }
+
+        Random rand = new Random();
+        final int maxSalary = 5000, minSalary = 500;
+        int salary = rand.nextInt(maxSalary - minSalary + 1) + minSalary;
+        int idx = rand.nextInt(possibleJobs.size());
+        Job ret = new Job(possibleJobs.get(idx).title ,"Default description", salary, possibleJobs.get(idx).company);
+        possibleJobs.remove(idx);
         return ret;
     }
 
