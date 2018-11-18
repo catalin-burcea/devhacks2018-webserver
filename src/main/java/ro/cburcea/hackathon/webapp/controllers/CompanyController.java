@@ -23,6 +23,14 @@ public class CompanyController {
     @Autowired
     UserRepository userRepository;
 
+    @PostMapping(path = "login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public User verifyUser(@RequestParam(value = "username", required = true) String username,
+                            @RequestParam(value = "password", required = true) String password) {
+
+        User user = userRepository.findByUsernameAndPassword(username, password).orElseThrow(() -> new ObjectNotFoundException(1L));
+        return user;
+    }
+
     @GetMapping(path = "/companies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Company> getCompanies(@RequestParam(value = "name", required = false) String name,
                                       @RequestParam(value = "location", required = false) String location,
@@ -38,26 +46,6 @@ public class CompanyController {
         }
 
         return ret;
-
-//        if (location == null) {
-//            if (name == null) {
-//                return companyRepository.findAll();
-//            }
-//            return companyRepository.findByName(name);
-//        }
-//
-//        List<Company> companies = companyRepository.findByLocation(location);
-//        if (name == null) {
-//            return companies;
-//        }
-//
-//        List<Company> arr = new ArrayList<>();
-//        for (Company comp : companies) {
-//            if (comp.getName().compareTo(name) == 0) {
-//                arr.add(comp);
-//            }
-//        }
-//        return arr;
     }
 
     @PostMapping(path = "/companies/{companyId}/reviews", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
