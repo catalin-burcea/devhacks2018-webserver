@@ -10,6 +10,7 @@ public class Review {
     private String description;
     private Integer rating;
     private String category;
+    private String subject;
 
     @ManyToOne
     private Company company;
@@ -19,10 +20,11 @@ public class Review {
     public Review() {
     }
 
-    public Review(String description, Integer rating, String category, Company company, User user) {
+    public Review(String description, Integer rating, String category, String subject, Company company, User user) {
         this.description = description;
         this.rating = rating;
         this.category = category;
+        this.subject = subject;
         this.company = company;
         this.user = user;
     }
@@ -73,5 +75,13 @@ public class Review {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

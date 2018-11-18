@@ -9,11 +9,12 @@ import ro.cburcea.hackathon.webapp.repositories.ReviewRepository;
 import ro.cburcea.hackathon.webapp.repositories.TagRepository;
 import ro.cburcea.hackathon.webapp.repositories.UserRepository;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.TreeSet;
 
 public class RandomEntry {
     private static TreeSet<String> userSet;
@@ -215,7 +216,7 @@ public class RandomEntry {
         Random rand = new Random();
         int idx = rand.nextInt(possibleReviews.size());
         int rating = rand.nextInt(5) + 1;
-        Review ret = new Review("Default description", rating, possibleReviews.get(idx).category, possibleReviews.get(idx).company, possibleReviews.get(idx).user);
+        Review ret = new Review("Default description", rating, possibleReviews.get(idx).category, "Great Company, Great Culture, Lots of Opportunities", possibleReviews.get(idx).company, possibleReviews.get(idx).user);
         possibleReviews.remove(idx);
         return ret;
     }

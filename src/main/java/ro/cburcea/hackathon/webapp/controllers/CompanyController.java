@@ -51,6 +51,7 @@ public class CompanyController {
     @PostMapping(path = "/companies/{companyId}/reviews", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Review addReview(@RequestParam(value = "rating", required = true) Integer rating,
                             @RequestParam(value = "category", required = true) String category,
+                            @RequestParam(value = "subject", required = true) String subject,
                             @RequestParam(value = "description", required = true) String description,
                             @RequestParam(value = "userId", required = true) Long userId,
                             @PathVariable Long companyId) {
@@ -58,7 +59,7 @@ public class CompanyController {
         User user = userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException(userId));
         Company company = companyRepository.findById(companyId).orElseThrow(() -> new ObjectNotFoundException(companyId));
 
-        Review newReview = new Review(description, rating, category, company, user);
+        Review newReview = new Review(description, rating, category, subject, company, user);
 
         System.out.println("Adding " + reviewRepository.save(newReview));
 
