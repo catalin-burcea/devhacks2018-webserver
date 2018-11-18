@@ -38,9 +38,9 @@ public class CompanyController {
         List<Company> companies = companyRepository.findAll();
         List<Company> ret = new ArrayList<>();
         for (Company comp : companies) {
-            if (    (name == null || comp.getName().compareTo(name) == 0) &&
-                    (location == null || comp.getLocation().compareTo(location) == 0) &&
-                    (tag == null || comp.getTag().getName().compareTo(tag) == 0)   ) {
+            if (    (name == null || name.equals("") || comp.getName().compareTo(name) == 0) &&
+                    (location == null || location.equals("")  || comp.getLocation().compareTo(location) == 0) &&
+                    (tag == null || tag.equals("") ||comp.getTag().getName().compareTo(tag) == 0)   ) {
                 ret.add(comp);
             }
         }
